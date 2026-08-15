@@ -125,4 +125,4 @@ If AutoLabeler saves you time on your next CV project, consider starring the rep
 
 ## 📄 License
 
-Add your license of choice here (MIT is a common pick for open collaboration projects).
+MIT License
