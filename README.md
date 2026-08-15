@@ -32,7 +32,7 @@ Then either embed it directly (GitHub renders mp4 previews on the repo page)
 or link to it, e.g.:
 -->
 
-[![Watch the demo](https://img.shields.io/badge/▶-Watch%20the%20demo-blue?style=for-the-badge)](readme_docs/video.webm)
+[![Watch the demo](https://img.shields.io/badge/▶-Watch%20the%20demo-blue?style=for-the-badge)](readme_docs/video.mp4)
 
 ---
 
