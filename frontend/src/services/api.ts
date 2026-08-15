@@ -13,7 +13,14 @@ import {
   LabelingProgress, ModelsStatus, ModelCatalogProfile
 } from '@/types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/v1';
+
+export const getMediaUrl = (url: string) => {
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  const baseUrl = new URL(API_BASE_URL);
+  return `${baseUrl.protocol}//${baseUrl.host}${url.startsWith('/') ? '' : '/'}${url}`;
+};
 
 const api = axios.create({
   baseURL: API_BASE_URL,

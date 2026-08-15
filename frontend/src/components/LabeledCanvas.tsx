@@ -7,6 +7,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { ImageLabels, LabelAnnotation } from '@/types';
+import { getMediaUrl } from '@/services/api';
 
 export type AnnotationTool = 'select' | 'bbox' | 'polygon';
 
@@ -123,33 +124,89 @@ export default function LabeledCanvas({
     }, [panOffset, fitScale, zoom]);
 
     // Image load error state
-    const [_imageError, setImageError] = useState(false);
+    const [imageError, setImageError] = useState(false);
+    const blobUrlRef = useRef<string | null>(null);
 
-    // Load image and compute fit scale
+    // Load image using fetch + blob URL to bypass all browser image loading quirks
     useEffect(() => {
         if (!imageLabels.image_url) return;
         setImageError(false);
-        const img = new Image();
-        img.src = imageLabels.image_url;
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-            imageRef.current = img;
+        imageRef.current = null;
+        let cancelled = false;
+
+        // Clean up previous blob URL
+        if (blobUrlRef.current) {
+            URL.revokeObjectURL(blobUrlRef.current);
+            blobUrlRef.current = null;
+        }
+
+        const loadImage = async () => {
+            try {
+                // Use getMediaUrl to get the absolute backend URL and bypass Vite proxy entirely
+                const absoluteUrl = getMediaUrl(imageLabels.image_url!);
+                const response = await fetch(absoluteUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const blob = await response.blob();
+                if (cancelled) return;
+
+                // Create a local blob URL that the browser can always load
+                const blobUrl = URL.createObjectURL(blob);
+                blobUrlRef.current = blobUrl;
+
+                const img = new Image();
+                img.onload = () => {
+                    if (cancelled) return;
+                    imageRef.current = img;
+                    updateLayout();
+                };
+                img.onerror = () => {
+                    if (cancelled) return;
+                    console.error('[LabeledCanvas] Failed to decode image blob');
+                    setImageError(true);
+                    imageRef.current = null;
+                };
+                img.src = blobUrl;
+            } catch (err) {
+                if (cancelled) return;
+                console.error('[LabeledCanvas] Failed to fetch image:', imageLabels.image_url, err);
+                setImageError(true);
+                imageRef.current = null;
+            }
+        };
+
+        const updateLayout = () => {
+            if (!imageRef.current) return;
             const container = containerRef.current;
             if (!container) return;
             const cW = container.clientWidth;
             const cH = container.clientHeight || 600;
-            const s = Math.min(cW / img.width, cH / img.height);
+            if (cW === 0 || cH === 0) return;
+            const s = Math.min(cW / imageRef.current.width, cH / imageRef.current.height);
             setFitScale(s);
-            // Center the image
             setPanOffset({
-                x: (cW - img.width * s) / 2,
-                y: (cH - img.height * s) / 2,
+                x: (cW - imageRef.current.width * s) / 2,
+                y: (cH - imageRef.current.height * s) / 2,
             });
         };
-        img.onerror = () => {
-            console.error('[LabeledCanvas] Failed to load image:', imageLabels.image_url);
-            setImageError(true);
-            imageRef.current = null;
+
+        loadImage();
+
+        const container = containerRef.current;
+        if (!container) return;
+        const resizeObserver = new ResizeObserver(() => {
+            updateLayout();
+        });
+        resizeObserver.observe(container);
+
+        return () => {
+            cancelled = true;
+            resizeObserver.disconnect();
+            if (blobUrlRef.current) {
+                URL.revokeObjectURL(blobUrlRef.current);
+                blobUrlRef.current = null;
+            }
         };
     }, [imageLabels.image_url]);
 
@@ -713,6 +770,17 @@ export default function LabeledCanvas({
                 className="absolute inset-0 w-full h-full"
                 style={{ cursor: cursorStyle }}
             />
+
+            {imageError && (
+                <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-red-950/80 text-red-400 z-40">
+                    <svg className="w-12 h-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <p className="text-lg font-semibold">Failed to load image</p>
+                    <p className="text-sm opacity-80 mt-2 font-mono break-all px-4 text-center">{imageLabels.image_url}</p>
+                </div>
+            )}
+
             {!imageLabels.image_url && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-500 space-y-2">
                     <span className="text-4xl">🖼️</span>
