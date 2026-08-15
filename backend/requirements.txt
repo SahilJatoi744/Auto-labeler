@@ -1,0 +1,55 @@
+# FastAPI and web server
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+aiofiles==23.2.1
+websockets==12.0
+
+# Data validation and settings
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Deep Learning - PyTorch
+torch==2.1.2
+torchvision==0.16.2
+--index-url https://download.pytorch.org/whl/cu118
+
+# Computer Vision Models
+# YOLOv26 requires ultralytics >= 8.4.0.
+# SAM 3 concept segmentation is available in Ultralytics >= 8.3.237
+# when an approved sam3.pt weight file is placed in backend/models.
+ultralytics>=8.4.0
+# SAM 2 (Meta's Segment Anything Model 2)
+sam-2>=1.0
+opencv-python-headless==4.9.0.80
+pillow==10.2.0
+# Required for optional Grounding DINO and DINOv3 local adapters.
+transformers>=4.56.0
+accelerate>=0.34.0
+safetensors>=0.4.5
+
+# Legacy SAM (kept for compatibility, can be removed later)
+# segment-anything==1.0
+
+# Data processing
+numpy==1.26.3
+pandas==2.1.4
+scikit-learn==1.3.2
+scikit-image==0.22.0
+
+# COCO format and geometry
+pycocotools==2.0.7
+shapely==2.0.2
+
+# Utilities
+tqdm==4.66.1
+rich==13.7.0
+python-json-logger==2.0.7
+pyyaml==6.0.1
+psutil>=5.9.0
+
+# Image hash for deduplication
+imagehash==4.3.1
+
+# For Detectron2 (optional, install separately)
+# detectron2 - see setup guide

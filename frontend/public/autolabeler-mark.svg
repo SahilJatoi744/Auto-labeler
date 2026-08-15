@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AutoLabeler">
+  <rect width="64" height="64" rx="14" fill="#0f172a"/>
+  <path d="M17 21.5A4.5 4.5 0 0 1 21.5 17h21A4.5 4.5 0 0 1 47 21.5v21a4.5 4.5 0 0 1-4.5 4.5h-21A4.5 4.5 0 0 1 17 42.5v-21Z" fill="#1d4ed8"/>
+  <path d="M23 27a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H27a4 4 0 0 1-4-4V27Z" fill="#eff6ff"/>
+  <path d="M28 35.5 31.2 27h2.1l3.2 8.5h-2l-.6-1.8h-3.4l-.6 1.8H28Zm3-3.4h2.4l-1.2-3.5-1.2 3.5Z" fill="#0f172a"/>
+  <path d="M21 14h6v4h-6a3 3 0 0 0-3 3v6h-4v-6a7 7 0 0 1 7-7Zm16 0h6a7 7 0 0 1 7 7v6h-4v-6a3 3 0 0 0-3-3h-6v-4ZM14 37h4v6a3 3 0 0 0 3 3h6v4h-6a7 7 0 0 1-7-7v-6Zm32 0h4v6a7 7 0 0 1-7 7h-6v-4h6a3 3 0 0 0 3-3v-6Z" fill="#38bdf8"/>
+</svg>
