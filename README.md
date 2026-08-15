@@ -2,7 +2,7 @@
 
 **AI-powered automatic image dataset labeling platform**
 
-AutoLabeler takes the tedious, hours-eating part of computer vision work drawing boxes and masks by hand — and automates it. It combines state-of-the-art object detection (YOLO, YOLO-World) and instance/semantic segmentation (SAM, SAM 2, SAM 3) into one local pipeline, with a human-in-the-loop editor to review and fix anything the AI gets wrong.
+AutoLabeler takes the tedious, hours-eating part of computer vision work drawing boxes and masks by hand and automates it. It combines state-of-the-art object detection (YOLO, YOLO-World) and instance/semantic segmentation (SAM, SAM 2, SAM 3) into one local pipeline, with a human-in-the-loop editor to review and fix anything the AI gets wrong.
 
 Built by [Sahil Jatoi](https://github.com/SahilJatoi744) and [Bushra Abro](https://github.com/) now open for public use and contributions.
 
@@ -10,7 +10,7 @@ Built by [Sahil Jatoi](https://github.com/SahilJatoi744) and [Bushra Abro](https
 
 ## ✨ Why AutoLabeler
 
-Manual dataset labeling doesn't scale. AutoLabeler handles the full lifecycle — from spinning up the backend, to running automated annotation and quality checks, to human review, to exporting a training-ready dataset — so you spend your time on the model, not the mouse.
+Manual dataset labeling doesn't scale. AutoLabeler handles the full lifecycle from spinning up the backend, to running automated annotation and quality checks, to human review, to exporting a training-ready dataset so you spend your time on the model, not the mouse.
 
 ### Key Features
 
