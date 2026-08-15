@@ -18,7 +18,10 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import time
 
 import numpy as np
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 
 from ..core.config import settings
 from ..core.logging import get_logger
@@ -107,7 +110,7 @@ class DeploymentService:
     def __init__(self):
         self.inference_cache = LRUCache(max_size=1000)
         self.batch_queue: List[Tuple[np.ndarray, Dict]] = []
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if torch is not None else "cpu"
         self._exported_models: Dict[str, Path] = {}
     
     def export_yolo_onnx(

@@ -8,7 +8,10 @@ FastAPI API routes for AutoLabeler.
 Aggregates all domain-specific sub-routers into a single router.
 """
 
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None  # PyTorch not installed yet - GPU features disabled
 import psutil
 
 from fastapi import APIRouter, HTTPException
@@ -55,7 +58,7 @@ async def health_check():
     return SystemStatus(
         status="healthy",
         version=settings.APP_VERSION,
-        gpu_available=torch.cuda.is_available() if hasattr(torch, 'cuda') else False,
+        gpu_available=torch.cuda.is_available() if torch is not None and hasattr(torch, 'cuda') else False,
         gpu_info=gpu_info,
         cpu_count=psutil.cpu_count(),
         cpu_usage=cpu_usage,
@@ -82,7 +85,7 @@ async def set_system_device(device: str):
 async def get_device_info():
     """Get current device configuration and available options."""
     try:
-        gpu_available = torch.cuda.is_available()
+        gpu_available = torch.cuda.is_available() if torch is not None else False
         gpu_info = None
         if gpu_available:
             gpu_info = {
@@ -112,9 +115,9 @@ async def set_device(device: str):
     try:
         device = device.lower()
         if device == "auto":
-            device = "cuda" if torch.cuda.is_available() else "cpu"
+            device = "cuda" if (torch is not None and torch.cuda.is_available()) else "cpu"
         elif device == "gpu":
-            if not torch.cuda.is_available():
+            if torch is None or not torch.cuda.is_available():
                 raise HTTPException(status_code=400, detail="GPU not available")
             device = "cuda"
         elif device != "cpu":

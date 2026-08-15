@@ -19,18 +19,22 @@ import json
 
 import cv2
 import numpy as np
-import torch
-import torch.nn.functional as F
+try:
+    import torch
+    import torch.nn.functional as F
+    
+    # For PyTorch 2.6+ security restrictions
+    # Monkeypatch torch.load to default weights_only=False for trusted local models
+    _original_torch_load = torch.load
+    def _patched_torch_load(*args, **kwargs):
+        if 'weights_only' not in kwargs:
+            kwargs['weights_only'] = False
+        return _original_torch_load(*args, **kwargs)
+    torch.load = _patched_torch_load
+except ImportError:
+    torch = None
+    F = None
 from PIL import Image
-
-# For PyTorch 2.6+ security restrictions
-# Monkeypatch torch.load to default weights_only=False for trusted local models
-_original_torch_load = torch.load
-def _patched_torch_load(*args, **kwargs):
-    if 'weights_only' not in kwargs:
-        kwargs['weights_only'] = False
-    return _original_torch_load(*args, **kwargs)
-torch.load = _patched_torch_load
 
 from ..core.config import settings
 from ..core.logging import get_logger
@@ -132,28 +136,36 @@ class ModelManager:
             self.download_status["sam2"]["progress"] = 100
 
     
-    def _get_device(self) -> torch.device:
+    def _get_device(self) -> Any:
         """Determine the best available device."""
-        if settings.USE_GPU and torch.cuda.is_available():
+        if torch is not None and settings.USE_GPU and torch.cuda.is_available():
             device = torch.device(f"cuda:{settings.GPU_DEVICE}")
             self.logger.info(f"Using GPU: {torch.cuda.get_device_name(device)}")
             return device
-        else:
-            self.logger.info("Using CPU for inference")
-            return torch.device("cpu")
+        
+        self.logger.info("Using CPU for inference")
+        return torch.device("cpu") if torch is not None else "cpu"
     
     def get_gpu_info(self) -> Optional[Dict[str, Any]]:
         """Get GPU information if available."""
-        if not torch.cuda.is_available():
-            return None
+        if torch is None or not torch.cuda.is_available():
+            return {
+                "name": "CPU",
+                "memory_total_gb": 0,
+                "memory_allocated_gb": 0,
+                "memory_cached_gb": 0
+            }
         
-        return {
-            "name": torch.cuda.get_device_name(settings.GPU_DEVICE),
-            "index": settings.GPU_DEVICE,
-            "memory_total_gb": torch.cuda.get_device_properties(settings.GPU_DEVICE).total_memory / 1e9,
-            "memory_allocated_gb": torch.cuda.memory_allocated(settings.GPU_DEVICE) / 1e9,
-            "memory_cached_gb": torch.cuda.memory_reserved(settings.GPU_DEVICE) / 1e9,
-        }
+        try:
+            return {
+                "name": torch.cuda.get_device_name(settings.GPU_DEVICE),
+                "index": settings.GPU_DEVICE,
+                "memory_total_gb": torch.cuda.get_device_properties(settings.GPU_DEVICE).total_memory / 1e9,
+                "memory_allocated_gb": torch.cuda.memory_allocated(settings.GPU_DEVICE) / 1e9,
+                "memory_cached_gb": torch.cuda.memory_reserved(settings.GPU_DEVICE) / 1e9,
+            }
+        except Exception:
+            return None
 
     def set_device(self, device: str = "auto"):
         """
@@ -170,13 +182,19 @@ class ModelManager:
             # Legacy boolean support
             device = "cuda" if device else "cpu"
         elif device.lower() == "auto":
-            device = "cuda" if torch.cuda.is_available() else "cpu"
+            device = "cuda" if (torch is not None and torch.cuda.is_available()) else "cpu"
         elif device.lower() == "gpu":
             device = "cuda"
         else:
             device = device.lower()
-        
-        new_device = torch.device(f"cuda:{settings.GPU_DEVICE}") if (device == "cuda" and torch.cuda.is_available()) else torch.device("cpu")
+        if device == "auto":
+            device = "cuda" if (torch is not None and torch.cuda.is_available()) else "cpu"
+            
+        if device == "cuda" and (torch is None or not torch.cuda.is_available()):
+            self.logger.warning("GPU requested but not available. Falling back to CPU.")
+            device = "cpu"
+            
+        new_device = torch.device(f"cuda:{settings.GPU_DEVICE}") if (device == "cuda" and torch is not None and torch.cuda.is_available()) else (torch.device("cpu") if torch is not None else "cpu")
         
         if new_device != self.device:
             self.logger.info(f"Switching device from {self.device} to {new_device}")

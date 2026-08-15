@@ -14,8 +14,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 import cv2
 import numpy as np
-import torch
-import torch.nn.functional as F
+try:
+    import torch
+    import torch.nn.functional as F
+except ImportError:
+    torch = None
+    F = None
 
 from ..core.config import settings
 from ..core.logging import get_logger
@@ -124,7 +128,7 @@ class SemanticSegmentationService:
             logger.error(f"Failed to load DeepLabV3+: {e}")
             raise
     
-    def _preprocess(self, image: np.ndarray) -> torch.Tensor:
+    def _preprocess(self, image: np.ndarray) -> Any:
         """
         Preprocess image for model input.
         
