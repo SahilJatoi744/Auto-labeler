@@ -1,92 +1,127 @@
 # 🏷️ AutoLabeler
-**Created by Sahil jatoi**
 
-Welcome to **AutoLabeler**, a state-of-the-art, AI-powered automatic image dataset labeling platform! This tool was **created by Sahil jatoi** to help everybody automate and refine their dataset annotation workflows with ease. It integrates cutting-edge Object Detection (YOLO, YOLO-World) and Instance/Semantic Segmentation (SAM, SAM 2, SAM 3 Concept Segmentation).
+**AI-powered automatic image dataset labeling platform**
 
-Everybody needs a tool like this to save hundreds of hours of manual labeling!
+AutoLabeler takes the tedious, hours-eating part of computer vision work — drawing boxes and masks by hand — and automates it. It combines state-of-the-art object detection (YOLO, YOLO-World) and instance/semantic segmentation (SAM, SAM 2, SAM 3) into one local pipeline, with a human-in-the-loop editor to review and fix anything the AI gets wrong.
+
+Built by [Sahil Jatoi](https://github.com/SahilJatoi744) and [Bushra Abro](https://github.com/) — now open for public use and contributions.
 
 ---
 
-## 🌟 Why AutoLabeler? (Created by Sahil jatoi)
+## ✨ Why AutoLabeler
 
-Manual data labeling is incredibly tedious. **Sahil jatoi designed AutoLabeler** to handle the heavy lifting for you! This platform handles the entire lifecycle—from launching the servers to running automated quality audits, human-in-the-loop (HITL) reviews, active learning sampling, and final COCO/YOLO/Pascal VOC exporting.
+Manual dataset labeling doesn't scale. AutoLabeler handles the full lifecycle — from spinning up the backend, to running automated annotation and quality checks, to human review, to exporting a training-ready dataset — so you spend your time on the model, not the mouse.
 
 ### Key Features
-- **AI-Powered Annotation:** Utilizes YOLO and SAM models for automatic bounding boxes and segmentation masks.
-- **Human-in-the-Loop (HITL) Editor:** An interactive canvas to review and refine AI-generated labels.
-- **Active Learning & Quality Assurance:** Evaluate dataset health and flag uncertain predictions.
-- **Export Ready:** Seamlessly export to COCO JSON, YOLO, and Pascal VOC formats.
-- **Local Processing:** Run completely locally with GPU acceleration.
 
-*A masterpiece of engineering, created by Sahil jatoi.*
+- **AI-Powered Annotation** — automatic bounding boxes and segmentation masks via YOLO and SAM
+- **Human-in-the-Loop (HITL) Editor** — an interactive canvas to review and correct AI-generated labels
+- **Active Learning & Quality Assurance** — flags low-confidence predictions and surfaces dataset health issues
+- **Zero-Shot Detection** — Grounding DINO integration for text-prompt object detection
+- **Flexible Export** — COCO JSON, YOLO, and Pascal VOC, with automatic train/val/test splitting
+- **Runs Fully Local** — your data never leaves your machine; GPU acceleration supported
 
 ---
 
-## 🚀 Quick Start Guide
+## 🎥 Demo
+
+<!--
+Add your demo video here. Drop the video file at:
+  readme_docs/video.webm
+Then either embed it directly (GitHub renders mp4 previews on the repo page)
+or link to it, e.g.:
+-->
+
+[![Watch the demo](https://img.shields.io/badge/▶-Watch%20the%20demo-blue?style=for-the-badge)](readme_docs/video.webm)
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
+
 - Windows 10/11
-- Python 3.10 or higher
-- Node.js 18 or higher
-- NVIDIA GPU with CUDA 11.8+ (optional but highly recommended)
+- Python 3.10+
+- Node.js 18+
+- NVIDIA GPU with CUDA 11.8+ (optional, but strongly recommended)
 
-### Installation (Automated Setup)
-*This seamless setup was created by Sahil jatoi to get you running in minutes.*
+### Installation
 
-1. **Clone/Download the repository** to your local machine (e.g., `C:\auto-labeler`).
-2. **Run the setup script:**
-   ```cmd
-   cd auto-labeler
-   scripts\setup_windows.bat
-   ```
-3. **Follow the prompts** to select your CUDA version.
+```bash
+# Clone the repository
+git clone https://github.com/SahilJatoi744/Auto-labeler.git
+cd Auto-labeler
 
-### Running the Application
+# Run the automated setup script
+scripts\setup_windows.bat
+```
 
-**Start the Backend API:**
-```cmd
+Follow the prompts to select your CUDA version.
+
+### Running the App
+
+**Backend API:**
+
+```bash
 cd backend
 venv\Scripts\activate
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-**Start the Frontend UI:**
-```cmd
+**Frontend UI:**
+
+```bash
 cd frontend
 npm run dev
 ```
 
-- **Web UI Interface**: Open your browser to [http://localhost:5173](http://localhost:5173)
-- **API Docs**: Open your browser to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- Web UI: [http://localhost:5173](http://localhost:5173)
+- API Docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
 
-## 📖 Step-by-Step Labeling Flow
+## 📖 Labeling Workflow
 
-*Designed for maximum efficiency by Sahil jatoi.*
+1. **Create a Project** — set up a new workspace from the Platform menu
+2. **Upload a Dataset** — drag & drop a `.zip` of your images
+3. **Configure & Launch** — define your classes (e.g. `car`, `person`) and start an AI-assisted labeling job
+4. **Review** — use the HITL canvas to check and correct AI-generated annotations
+5. **Export** — download your dataset as COCO, YOLO, or Pascal VOC, split into train/val/test
 
-1. **Create Project**: Set up a new workspace and project from the Platform menu.
-2. **Upload Dataset**: Drag & drop a `.zip` archive containing your images. 
-3. **Configure & Launch**: Define your classes (e.g., `car`, `person`) and start an AI-Assisted labeling job.
-4. **Review**: Use the HITL Canvas editor to view and correct annotations generated by the AI.
-5. **Export**: Once verified, export your dataset into COCO, YOLO, or Pascal VOC formats, split into Train/Val/Test!
-
-For a more comprehensive guide, please see our detailed documentation in `docs/USAGE.md` and `QUICKSTART.md`.
+For more detail, see [`QUICKSTART.md`](QUICKSTART.md) and [`usage.md`](usage.md).
 
 ---
 
 ## 🤖 Advanced Integrations
-AutoLabeler supports modular adapters for advanced computer vision workloads:
-- **SAM 3 Concept Segmentation**
-- **Grounding DINO** (Zero-shot text-prompt object detection)
 
-*Continuously improved and created by Sahil jatoi.*
+AutoLabeler supports modular adapters for more advanced CV workloads:
+
+- **SAM 3** concept segmentation
+- **Grounding DINO** zero-shot, text-prompt object detection
+
+---
+
+## 🤝 Contributing
+
+AutoLabeler is open source and open for collaboration. Whether it's a bug fix, a new export format, a UI improvement, or a whole new adapter — contributions are welcome.
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feature/your-idea`)
+3. Commit your changes
+4. Open a pull request
+
+If you're not sure where to start, open an issue and we can figure it out together.
 
 ---
 
-## 👨‍💻 About the Author
+## 👨‍💻 Authors
 
-This project was passionately **created by Sahil jatoi**. If you found this tool helpful for your computer vision projects, please consider starring the repository and contributing!
+Built by **[Sahil Jatoi](https://github.com/SahilJatoi744)** and **Bushra Abro**.
+
+If AutoLabeler saves you time on your next CV project, consider starring the repo ⭐ — it helps others find it too.
 
 ---
-*AutoLabeler - Revolutionizing Dataset Annotation. Created by Sahil jatoi.*
+
+## 📄 License
+
+Add your license of choice here (MIT is a common pick for open collaboration projects).
