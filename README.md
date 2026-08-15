@@ -32,6 +32,9 @@ Then either embed it directly (GitHub renders mp4 previews on the repo page)
 or link to it, e.g.:
 -->
 
+
+https://github.com/user-attachments/assets/4989c2f3-5e03-4a50-9af7-94b32152a65c
+
 [![Watch the demo](https://img.shields.io/badge/▶-Watch%20the%20demo-blue?style=for-the-badge)](readme_docs/video.mp4)
 
 ---
