@@ -2,9 +2,9 @@
 
 **AI-powered automatic image dataset labeling platform**
 
-AutoLabeler takes the tedious, hours-eating part of computer vision work — drawing boxes and masks by hand — and automates it. It combines state-of-the-art object detection (YOLO, YOLO-World) and instance/semantic segmentation (SAM, SAM 2, SAM 3) into one local pipeline, with a human-in-the-loop editor to review and fix anything the AI gets wrong.
+AutoLabeler takes the tedious, hours-eating part of computer vision work drawing boxes and masks by hand — and automates it. It combines state-of-the-art object detection (YOLO, YOLO-World) and instance/semantic segmentation (SAM, SAM 2, SAM 3) into one local pipeline, with a human-in-the-loop editor to review and fix anything the AI gets wrong.
 
-Built by [Sahil Jatoi](https://github.com/SahilJatoi744) and [Bushra Abro](https://github.com/) — now open for public use and contributions.
+Built by [Sahil Jatoi](https://github.com/SahilJatoi744) and [Bushra Abro](https://github.com/) now open for public use and contributions.
 
 ---
 
@@ -14,12 +14,12 @@ Manual dataset labeling doesn't scale. AutoLabeler handles the full lifecycle �
 
 ### Key Features
 
-- **AI-Powered Annotation** — automatic bounding boxes and segmentation masks via YOLO and SAM
-- **Human-in-the-Loop (HITL) Editor** — an interactive canvas to review and correct AI-generated labels
-- **Active Learning & Quality Assurance** — flags low-confidence predictions and surfaces dataset health issues
-- **Zero-Shot Detection** — Grounding DINO integration for text-prompt object detection
-- **Flexible Export** — COCO JSON, YOLO, and Pascal VOC, with automatic train/val/test splitting
-- **Runs Fully Local** — your data never leaves your machine; GPU acceleration supported
+- **AI-Powered Annotation**: automatic bounding boxes and segmentation masks via YOLO and SAM
+- **Human-in-the-Loop (HITL) Editor**: an interactive canvas to review and correct AI-generated labels
+- **Active Learning & Quality Assurance**: flags low-confidence predictions and surfaces dataset health issues
+- **Zero-Shot Detection**: Grounding DINO integration for text-prompt object detection
+- **Flexible Export**: COCO JSON, YOLO, and Pascal VOC, with automatic train/val/test splitting
+- **Runs Fully Local**: your data never leaves your machine; GPU acceleration supported
 
 ---
 
@@ -82,11 +82,11 @@ npm run dev
 
 ## 📖 Labeling Workflow
 
-1. **Create a Project** — set up a new workspace from the Platform menu
-2. **Upload a Dataset** — drag & drop a `.zip` of your images
-3. **Configure & Launch** — define your classes (e.g. `car`, `person`) and start an AI-assisted labeling job
-4. **Review** — use the HITL canvas to check and correct AI-generated annotations
-5. **Export** — download your dataset as COCO, YOLO, or Pascal VOC, split into train/val/test
+1. **Create a Project**: set up a new workspace from the Platform menu
+2. **Upload a Dataset**: drag & drop a `.zip` of your images
+3. **Configure & Launch**: define your classes (e.g. `car`, `person`) and start an AI-assisted labeling job
+4. **Review**: use the HITL canvas to check and correct AI-generated annotations
+5. **Export**: download your dataset as COCO, YOLO, or Pascal VOC, split into train/val/test
 
 For more detail, see [`QUICKSTART.md`](QUICKSTART.md) and [`usage.md`](usage.md).
 
@@ -103,7 +103,7 @@ AutoLabeler supports modular adapters for more advanced CV workloads:
 
 ## 🤝 Contributing
 
-AutoLabeler is open source and open for collaboration. Whether it's a bug fix, a new export format, a UI improvement, or a whole new adapter — contributions are welcome.
+AutoLabeler is open source and open for collaboration. Whether it's a bug fix, a new export format, a UI improvement, or a whole new adapter contributions are welcome.
 
 1. Fork the repo
 2. Create a feature branch (`git checkout -b feature/your-idea`)
@@ -118,7 +118,7 @@ If you're not sure where to start, open an issue and we can figure it out togeth
 
 Built by **[Sahil Jatoi](https://github.com/SahilJatoi744)** and **Bushra Abro**.
 
-If AutoLabeler saves you time on your next CV project, consider starring the repo ⭐ — it helps others find it too.
+If AutoLabeler saves you time on your next CV project, consider starring the repo ⭐ it helps others find it too.
 
 ---
 
